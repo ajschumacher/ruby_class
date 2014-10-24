@@ -18,7 +18,7 @@ def prompt(string)
 end
 
 def selectFrom(array)
-  while true
+  loop do
     array.each_with_index do |item, index|
       puts index.to_s + '   ' + item
     end
@@ -52,7 +52,7 @@ def newAddress(parts)
   result
 end
 
-while true
+loop do
   puts 'WELCOME TO THE MAIN MENU CHOOSE WISELY'
   case selectFrom(menu)
   when 0
