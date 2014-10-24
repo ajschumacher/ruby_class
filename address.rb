@@ -17,21 +17,25 @@ def prompt(string)
   gets.chomp
 end
 
-def selectFrom(array)
+def number_or_neg(string)
+  Integer(string)
+rescue ArgumentError
+  -1
+end
+
+def select_from(array)
   loop do
     array.each_with_index do |item, index|
       puts index.to_s + '   ' + item
     end
     response = prompt 'Make your choice: '
-    index = Integer(response) rescue -1
-    if 0 <= index and index < array.length
-      return response.to_i
-    end
+    choice = number_or_neg(response)
+    return response.to_i if 0 <= choice && choice < array.length
     puts "You don't know how to read, or something like that."
   end
 end
 
-def namesFrom(addresses)
+def names_from(addresses)
   addresses.map do |address|
     address[:last_name] + ', ' + address[:first_name]
   end
@@ -43,8 +47,8 @@ def display(address, parts)
   end
 end
 
-def newAddress(parts)
-  puts "You are adding a new entry."
+def new_address(parts)
+  puts 'You are adding a new entry.'
   result = {}
   parts.each do |part, description|
     result[part] = prompt(description)
@@ -54,23 +58,23 @@ end
 
 loop do
   puts 'WELCOME TO THE MAIN MENU CHOOSE WISELY'
-  case selectFrom(menu)
+  case select_from(menu)
   when 0
-    addresses << newAddress(parts)
+    addresses << new_address(parts)
   when 1
     if addresses.length < 1
       puts 'No addresses to view!'
       next
     end
-    index = selectFrom(namesFrom(addresses))
-    display(addresses[index], parts)
+    choice = select_from(names_from(addresses))
+    display(addresses[choice], parts)
   when 2
     if addresses.length < 1
       puts 'No addresses to delete!'
       next
     end
-    index = selectFrom(namesFrom(addresses))
-    addresses.delete_at(index)
+    choice = select_from(names_from(addresses))
+    addresses.delete_at(choice)
   when 3
     exit
   end
