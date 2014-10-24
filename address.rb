@@ -38,16 +38,16 @@ def namesFrom(addresses)
 end
 
 def display(address, parts)
-  parts.each do |part|
-    puts part[1] + address[part[0]]
+  parts.each do |part, description|
+    puts description + address[part]
   end
 end
 
 def newAddress(parts)
   puts "You are adding a new entry."
   result = {}
-  parts.each do |part|
-    result[part[0]] = prompt(part[1])
+  parts.each do |part, description|
+    result[part] = prompt(description)
   end
   result
 end
