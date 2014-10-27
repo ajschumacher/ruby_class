@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 
-number = 5
+number = 1 + rand(10)
 
 puts 'I am thinking of a number between 1 and 10.'
 
