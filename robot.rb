@@ -1,7 +1,7 @@
 #!/usr/bin/env ruby
 
-# ROBOT FACTORY
-class Robot
+# THING IN PLANE
+class PhysicalThing
   attr_accessor :x, :y
 
   def coordinates
@@ -11,7 +11,21 @@ class Robot
   def state_coordinates
     puts "I AM AT #{coordinates}"
   end
+end
 
+# VERY MAP
+class Shovel < PhysicalThing
+end
+
+# SO DIG
+class Shovel < PhysicalThing
+  def dig
+    puts 'SCOOP'
+  end
+end
+
+# ROBOT FACTORY
+class Robot < PhysicalThing
   def right
     puts 'RIGHT'
     self.x += 1
@@ -42,16 +56,16 @@ class Robot
   end
 end
 
-# Create a new Robot
-robot = Robot.new
-
-# Specify coordinates
+robot = Robot.new()
 robot.x = 3
 robot.y = 4
 
-robot.state_coordinates   # prints: I AM AT [3, 4]
-robot.navigate_to(4, 4)   # prints: RIGHT
-robot.state_coordinates   # prints: I AM AT [4, 4]
+shovel = Shovel.new
+shovel.x = 5
+shovel.y = 6
 
-robot.navigate_to(-4, 7)   # prints: RIGHT
-robot.state_coordinates   # prints: I AM AT [4, 4]
+robot.state_coordinates                # prints: I AM AT [3, 4]
+robot.navigate_to(shovel.x, shovel.y)  # prints: RIGHT RIGHT UP UP
+robot.state_coordinates                # prints: I AM AT [5, 6]
+
+shovel.dig                             # prints: SCOOP
