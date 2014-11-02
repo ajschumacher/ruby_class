@@ -5,6 +5,28 @@ menu = ['Create new entry',
         'Delete existing entry',
         'Quit Application']
 
+# Nice!  Field name, plus human-readable label.  The
+# Array-of-Arrays is definitely easier to type, but
+# I probably would have used an Array-of-Hashes instead:
+#
+#   [
+#     {
+#       field: :first_name,
+#       label: "First name: "
+#     },
+#     {
+#       field: :last_name,
+#       label: "Last name: "
+#     },
+#   ]
+#
+# Yeah, it's a lot more typing, but its meaning can be
+# deduced fairly easily.  It also makes it easy to add
+# new characteristics in the future without having to
+# change all of the code that's referencing this data
+# (Ex: what if you want to indicate that certain fields
+#      are required, or you want to add a validation
+#      message?                                       )
 parts = [[:first_name, 'First name: '],
          [:last_name, 'Last name: '],
          [:phone_number, 'Phone number: '],
@@ -20,9 +42,17 @@ end
 def number_or_neg(string)
   Integer(string)
 rescue ArgumentError
+  # Typically, it's better to let the caller handle an
+  # Exception rather than having the method return a
+  # "special value" when an error occurs.  Why?  Because
+  # Exceptions *must* be handled, whereas "special values"
+  # can be ignored accidentally.
   -1
 end
 
+
+# Definitely a very useful method, especially since it can
+# be reused for dynamically-sized menus.
 def select_from(array)
   loop do
     array.each_with_index do |item, index|
@@ -37,6 +67,13 @@ end
 
 def names_from(addresses)
   addresses.map do |address|
+    # String concatenation can be a little dangerous
+    # in Ruby since it only works when you can guarantee
+    # that everything is actually a String (and not nil).
+    # So, something like this:
+    #
+    #   "#{address[:last_name]}, #{address[:first_name]}"
+    #
     address[:last_name] + ', ' + address[:first_name]
   end
 end
@@ -62,6 +99,7 @@ loop do
   when 0
     addresses << new_address(parts)
   when 1
+    # Good catch!
     if addresses.length < 1
       puts 'No addresses to view!'
       next
@@ -69,6 +107,7 @@ loop do
     choice = select_from(names_from(addresses))
     display(addresses[choice], parts)
   when 2
+    # Once again: Good catch!
     if addresses.length < 1
       puts 'No addresses to delete!'
       next
